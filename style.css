@@ -67,6 +67,12 @@ a:hover {
   }
 }
 
+@media only screen and (max-width: 400px) {
+  .Info-avatar {
+    width: 100px;
+  }
+}
+
 .Info-name {
   font-size: 20px;
   font-weight: 500;
@@ -98,4 +104,5 @@ a:hover {
 
 .Footer {
   text-align: center;
+  padding-bottom: 30px;
 }
