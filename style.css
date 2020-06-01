@@ -24,6 +24,13 @@ a:hover {
   color: #337912;
 }
 
+h2 {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
 .Container {
   max-width: 800px;
   padding: 20px;
@@ -35,8 +42,7 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 50px;
-  margin-bottom: 50px;
-  border-bottom: 1px solid #eaeaea;
+  margin-bottom: 30px;
 }
 
 .Info-content {
@@ -74,7 +80,7 @@ a:hover {
 }
 
 .Info-name {
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 500;
   margin-bottom: 10px;
 }
@@ -105,4 +111,29 @@ a:hover {
 .Footer {
   text-align: center;
   padding-bottom: 30px;
+}
+
+.About {
+  margin-bottom: 30px;
+}
+
+.Projects {
+  margin-bottom: 30px;
+  display: flex;
+}
+
+.Projects-item {
+  display: flex;
+  flex-direction: row;
+}
+
+.Projects-item img {
+  width: 250px;
+  margin-right: 15px;
+}
+
+.Projects-item_name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
