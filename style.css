@@ -119,12 +119,16 @@ h2 {
 
 .Projects {
   margin-bottom: 30px;
-  display: flex;
 }
 
 .Projects-item {
   display: flex;
   flex-direction: row;
+  margin-bottom: 30px;
+}
+
+.Projects-item:last-of-type {
+  margin-bottom: 0;
 }
 
 .Projects-item img {
