@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+      LLMs Are Probabilistic. Your Product Shouldn’t Be. — Vedad Šoše
+    </title>
+    <meta
+      name="description"
+      content="LLMs Are Probabilistic. Your Product Shouldn’t Be. Prompts, tracing, and evals for measurable AI products."
+    />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <div class="Container">
+      <header class="Hero" style="padding-bottom: 24px; margin-bottom: 10px">
+        <div class="Hero-content">
+          <div class="Hero-actions" style="margin-top: 0">
+            <a class="Button" href="../blog.html">← All posts</a>
+          </div>
+        </div>
+      </header>
+
+      <article class="Post">
+        <h1 class="Post-title">
+          LLMs Are Probabilistic. Your Product Shouldn’t Be.
+        </h1>
+        <div class="Post-meta">By Vedad Šoše · 6 Oct 2025</div>
+
+        <p>
+          When we shipped our first LLM feature, we had no idea if it was
+          working well. Users would report issues days later, and we'd scramble
+          to figure out what went wrong. Was it the prompt? The model? Something
+          else entirely? We had no way to know.
+        </p>
+        <p>
+          The challenge with LLM products is that traditional monitoring isn't
+          enough. You can track latency and error rates, but that doesn't tell
+          you if the
+          <i>output</i> was any good. You need different tools.
+        </p>
+        <p>
+          Here's what actually helped us build confidence in our LLM features:
+          proper prompt management, trace visibility, and continuous evaluation.
+        </p>
+
+        <h2>Prompts</h2>
+        <p>
+          We started with prompts hardcoded in our application. Simple enough:
+          write a system prompt, pass it to the model, done. But as we iterated,
+          we ran into a problem. We'd tweak the wording to fix one issue and
+          unknowingly break something else. Small changes had unpredictable
+          effects.
+        </p>
+        <p>
+          The real issue hit when we needed to debug a user complaint from three
+          days ago. Which prompt version were they on? Had we changed it since?
+          We were git-blaming Python strings to figure out what happened.
+        </p>
+        <p>
+          Prompts need version control, but not the kind you get from Git. They
+          need runtime versioning: tracking which version ran for which user,
+          when, and what it produced. Treating prompts as just another config
+          string doesn't cut it. They're more like feature flags that directly
+          affect user experience.
+        </p>
+
+        <h2>Tracing</h2>
+        <p>
+          Our first approach was to log everything: prompt, response, timestamp,
+          user ID. It worked fine when we had one LLM call per request. Then we
+          added a second call to refine the output. Then a third to validate it.
+          Suddenly our logs were a mess of interleaved entries with no clear
+          connection.
+        </p>
+        <p>
+          When a user reported a bad output, we'd grep through logs trying to
+          reconstruct what happened. Which call failed? What was the
+          intermediate state? How long did each step take? We were doing
+          forensics on every issue.
+        </p>
+        <p>
+          Distributed tracing solved this. It's the same concept backend
+          engineers use for microservices: group related operations under one
+          trace ID. Each LLM call becomes a span, preserving the full context of
+          what happened. You see the entire chain from user input to final
+          output, including timing and failures.
+        </p>
+
+        <h2>Evals</h2>
+        <p>
+          Tracing tells you <i>what</i> happened. Evals tell you if it was any
+          good.
+        </p>
+        <p>
+          We started simple: thumbs up/down buttons. Useful, but only 2% of
+          users clicked them. We needed something that ran automatically. So we
+          built evaluators. Some were rule-based (did the output include
+          required fields?), others used LLMs to judge quality (is this response
+          helpful and on-topic?).
+        </p>
+        <p>
+          The key was running evals in production, not just in tests. Every
+          output got scored. When we changed a prompt, we could compare scores
+          before and after. Drop in quality? Roll it back. Improvement across
+          the board? Ship it confidently.
+        </p>
+        <p>
+          This closed the loop. We weren't just collecting traces, we were
+          learning from them.
+        </p>
+
+        <h3>Putting It Together</h3>
+        <p>
+          We could have built all this ourselves: a prompt registry, tracing
+          infrastructure, eval pipelines. But honestly, we just wanted to ship
+          our actual product. So we used Langfuse, which handles this stuff out
+          of the box.
+        </p>
+        <p>
+          It's not perfect, but it connected the pieces: prompts link to traces,
+          traces link to evals, and everything is queryable. When something
+          breaks, we can trace it back. When we improve something, we can
+          measure it. That's really all we needed.
+        </p>
+        <p>
+          The difference between before and after is simple: we went from
+          guessing if our LLM features worked to actually knowing. Not
+          everything needs to be mysterious just because there's a language
+          model involved.
+        </p>
+      </article>
+
+      <footer class="Footer">
+        <div>
+          Say hi at <a href="mailto:vedadsose@gmail.com">vedadsose@gmail.com</a>
+        </div>
+        <div class="Footer-heart" aria-hidden="true">⚙️</div>
+      </footer>
+    </div>
+  </body>
+</html>
